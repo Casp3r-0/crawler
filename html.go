@@ -10,11 +10,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-func getURLsFromHTML(htmlBody, rawBaseURL string) ([]string, error) {
-	baseURL, err := url.Parse(rawBaseURL)
-	if err != nil {
-		return nil, fmt.Errorf("Invalid base URL: %v", err)
-	}
+func getURLsFromHTML(htmlBody string, rawBaseURL *url.URL) ([]string, error) {
 
 	htmlReader := strings.NewReader(htmlBody)
 	doc, err := html.Parse(htmlReader)
@@ -32,7 +28,7 @@ func getURLsFromHTML(htmlBody, rawBaseURL string) ([]string, error) {
 					if err != nil {
 						continue
 					}
-					resolvedURL := baseURL.ResolveReference(href)
+					resolvedURL := rawBaseURL.ResolveReference(href)
 					links = append(links, resolvedURL.String())
 				}
 			}

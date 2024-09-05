@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/url"
 	"reflect"
 	"testing"
 )
@@ -72,7 +73,8 @@ func TestGetURLsFromHTML(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			urls, err := getURLsFromHTML(tt.htmlBody, tt.rawBaseURL)
+			baseURL, _ := url.Parse("www.example.com")
+			urls, err := getURLsFromHTML(tt.htmlBody, baseURL)
 
 			if tt.expectError {
 				if err == nil {
